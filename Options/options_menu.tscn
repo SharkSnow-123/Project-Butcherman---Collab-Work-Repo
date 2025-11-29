@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dcly6qupembpx"]
+
+[ext_resource type="Texture2D" uid="uid://bv620r1wlm6nm" path="res://Options/Music-On@4x.png" id="1_6bffs"]
+[ext_resource type="Texture2D" uid="uid://ymsh2u7weoat" path="res://Options/Music-Off@4x.png" id="2_vwtu1"]
+[ext_resource type="Texture2D" uid="uid://dpmaslufuiixp" path="res://Options/Hover-Music-On@4x.png" id="3_4gmlt"]
+[ext_resource type="Texture2D" uid="uid://gymthdij4lcp" path="res://Options/Sound-Two@4x.png" id="4_rrf4u"]
+[ext_resource type="Texture2D" uid="uid://ca1ry3kkwdyju" path="res://Options/Sound-None@4x.png" id="5_nqwpw"]
+[ext_resource type="Texture2D" uid="uid://c02qbq7oin12u" path="res://Options/Hover-Sound-Two@4x.png" id="6_vwtu1"]
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1151.0
+offset_bottom = 646.0
+color = Color(0.15127608, 0.15127608, 0.15127608, 1)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="Music" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 756.0
+offset_top = 10.0
+offset_right = 980.0
+offset_bottom = 234.0
+toggle_mode = true
+texture_normal = ExtResource("1_6bffs")
+texture_pressed = ExtResource("2_vwtu1")
+texture_hover = ExtResource("3_4gmlt")
+
+[node name="Sound" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 6.0
+offset_right = 387.0
+offset_bottom = 230.0
+toggle_mode = true
+texture_normal = ExtResource("4_rrf4u")
+texture_pressed = ExtResource("5_nqwpw")
+texture_hover = ExtResource("6_vwtu1")
