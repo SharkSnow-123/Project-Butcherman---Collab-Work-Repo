@@ -17,7 +17,19 @@ config/icon="uid://8xns13l2v8sx"
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/stretch/aspect="keep_width"
+
+[file_customization]
+
+folder_colors={
+"res://PersonalTextures/": "purple"
+}
+
+[gui]
+
+theme/custom="uid://ddb7k5ebo12t5"
 
 [rendering]
 

@@ -9,25 +9,52 @@
 script = ExtResource("1_ig7tw")
 
 [node name="GameBackground1" type="Sprite2D" parent="."]
-position = Vector2(575.5, 326.5)
-scale = Vector2(1.1240234, 0.84765625)
+position = Vector2(979, 541)
+scale = Vector2(1.1210938, 1.1510416)
 texture = ExtResource("2_0xm2m")
 
-[node name="PlayButton" type="Button" parent="."]
-offset_left = 216.0
-offset_top = 120.0
-offset_right = 366.0
-offset_bottom = 177.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PlayButton" type="Button" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.363
+anchor_top = 0.275
+anchor_right = 0.363
+anchor_bottom = 0.275
+offset_left = -71.96002
+offset_top = -29.99997
+offset_right = 71.64972
+offset_bottom = 30.814484
+focus_mode = 0
 icon = SubResource("ViewportTexture_0xm2m")
 flat = true
 
-[node name="QuitButton" type="Button" parent="."]
-offset_left = 226.0
-offset_top = 283.0
-offset_right = 345.0
-offset_bottom = 327.0
+[node name="OptionButton" type="Button" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.367
+anchor_top = 0.374
+anchor_right = 0.367
+anchor_bottom = 0.374
+offset_left = -81.640015
+offset_top = -30.920013
+offset_right = 101.359985
+offset_bottom = 29.89444
+focus_mode = 0
+flat = true
+
+[node name="QuitButton" type="Button" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.36400002
+anchor_top = 0.46500003
+anchor_right = 0.36400002
+anchor_bottom = 0.46500003
+offset_left = -67.880066
+offset_top = -38.200012
+offset_right = 67.119934
+offset_bottom = 37.799957
 tooltip_text = "This is a quit button."
 flat = true
 
-[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/OptionButton" to="." method="option_pressed"]
+[connection signal="pressed" from="CanvasLayer/QuitButton" to="." method="_on_quit_button_pressed"]

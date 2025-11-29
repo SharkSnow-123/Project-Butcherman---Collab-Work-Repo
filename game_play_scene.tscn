@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://d0yg1xr46lje1"]
+[gd_scene load_steps=8 format=3 uid="uid://d0yg1xr46lje1"]
 
 [ext_resource type="Texture2D" uid="uid://dfbjiv0yj88kh" path="res://Photos/ProtoType2.jpeg" id="1_3527d"]
 [ext_resource type="Script" uid="uid://brm7p6gshbjpu" path="res://game_play_scene.gd" id="1_xdn27"]
+[ext_resource type="Texture2D" uid="uid://ct2nkttk3myx1" path="res://Photos/Captured.jpeg" id="2_xdn27"]
+
+[sub_resource type="Theme" id="Theme_a7xop"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3527d"]
 
@@ -12,38 +15,82 @@ default_font_size = 20
 default_font_size = 30
 HeaderLarge/fonts/font = null
 
-[sub_resource type="Theme" id="Theme_a7xop"]
-
 [node name="GamePlayScene" type="Node2D"]
 script = ExtResource("1_xdn27")
 
+[node name="Captured" type="Sprite2D" parent="."]
+position = Vector2(1029, 525)
+scale = Vector2(0.7758847, 1.4931973)
+texture = ExtResource("2_xdn27")
+metadata/_edit_lock_ = true
+
 [node name="ProtoType3" type="Sprite2D" parent="."]
-position = Vector2(856, 330)
-scale = Vector2(2.5159576, 2.9906542)
+position = Vector2(1338.3125, 600)
+scale = Vector2(2.3601067, 2.9906542)
 texture = ExtResource("1_3527d")
+
+[node name="DialogueTimer" type="Timer" parent="."]
+
+[node name="DialoguePanel" type="Panel" parent="."]
+offset_left = 441.0
+offset_top = 786.0
+offset_right = 1615.0
+offset_bottom = 966.0
+
+[node name="DialogueText" type="Label" parent="DialoguePanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.379
+anchor_top = 0.5
+anchor_right = 0.379
+anchor_bottom = 0.5
+offset_left = -370.946
+offset_top = -78.0
+offset_right = 442.054
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 30
+
+[node name="DayFrame" type="Label" parent="."]
+offset_left = 490.0
+offset_top = 130.0
+offset_right = 580.0
+offset_bottom = 173.0
+theme = SubResource("Theme_a7xop")
+theme_type_variation = &"HeaderLarge"
+text = "Day 1"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="WordLabel" type="Label" parent="."]
 material = SubResource("CanvasItemMaterial_3527d")
-offset_left = 32.0
-offset_top = 96.0
-offset_right = 511.0
-offset_bottom = 172.0
+offset_left = 507.0
+offset_top = 198.0
+offset_right = 843.0
+offset_bottom = 290.0
 theme = SubResource("Theme_3527d")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="Option_Button" type="Button" parent="."]
+offset_left = 1101.0
+offset_top = 139.0
+offset_right = 1316.0
+offset_bottom = 193.0
+text = "Option Button
+"
+
 [node name="GuessedLetters" type="Label" parent="."]
-offset_left = 57.0
-offset_top = 507.0
-offset_right = 517.0
-offset_bottom = 578.0
+offset_left = 493.0
+offset_top = 594.0
+offset_right = 670.0
+offset_bottom = 717.0
 
 [node name="Letters" type="GridContainer" parent="."]
-offset_left = 55.0
-offset_top = 245.0
-offset_right = 408.0
-offset_bottom = 413.0
+offset_left = 492.0
+offset_top = 328.0
+offset_right = 845.0
+offset_bottom = 496.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 9
@@ -256,52 +303,67 @@ theme = SubResource("Theme_mf4hc")
 theme_override_font_sizes/font_size = 30
 text = "Z"
 
-[node name="DayFrame" type="Label" parent="."]
-offset_left = 38.0
-offset_top = 8.0
-offset_right = 128.0
-offset_bottom = 51.0
-theme = SubResource("Theme_a7xop")
-theme_type_variation = &"HeaderLarge"
-text = "Day 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="UndoButton" type="Button" parent="."]
-offset_left = 53.0
-offset_top = 422.0
-offset_right = 200.0
-offset_bottom = 477.0
+offset_left = 492.0
+offset_top = 515.0
+offset_right = 639.0
+offset_bottom = 570.0
 text = "UNDO
 "
 
 [node name="LosePanel" type="Panel" parent="."]
-offset_left = 641.0
-offset_top = 123.0
-offset_right = 1077.0
-offset_bottom = 451.0
+offset_left = 1141.0
+offset_top = 396.0
+offset_right = 1577.0
+offset_bottom = 724.0
 
 [node name="Title" type="Label" parent="LosePanel"]
-layout_mode = 0
-offset_left = 61.0
-offset_top = 76.0
-offset_right = 359.0
-offset_bottom = 145.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.337
+anchor_right = 0.5
+anchor_bottom = 0.337
+offset_left = -157.0
+offset_top = -34.536003
+offset_right = 141.0
+offset_bottom = 34.463997
 
 [node name="ContinueButton" type="Button" parent="LosePanel"]
-layout_mode = 0
-offset_left = 269.0
-offset_top = 283.0
-offset_right = 414.0
-offset_bottom = 319.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.78300005
+anchor_top = 0.91800004
+anchor_right = 0.78300005
+anchor_bottom = 0.91800004
+offset_left = -72.38803
+offset_top = -18.104004
+offset_right = 72.61197
+offset_bottom = 17.895996
 text = "Continue"
 
 [node name="ReturnMain" type="Button" parent="LosePanel"]
-layout_mode = 0
-offset_left = 35.0
-offset_top = 282.0
-offset_right = 208.0
-offset_bottom = 317.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.279
+anchor_top = 0.91300005
+anchor_right = 0.279
+anchor_bottom = 0.91300005
+offset_left = -86.644005
+offset_top = -17.46402
+offset_right = 86.355995
+offset_bottom = 17.53598
 text = "Return to Main Menu"
 
+[node name="ReturnToMain" type="Button" parent="."]
+offset_left = 1324.0
+offset_top = 139.0
+offset_right = 1539.0
+offset_bottom = 193.0
+text = "Return to Main
+"
+
+[connection signal="timeout" from="DialogueTimer" to="." method="_on_dialogue_timer_timeout"]
+[connection signal="pressed" from="Option_Button" to="." method="option_pressed"]
 [connection signal="pressed" from="LosePanel/ReturnMain" to="." method="_on_return_main_pressed"]
+[connection signal="pressed" from="ReturnToMain" to="." method="returnMain_pressed"]

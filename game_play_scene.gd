@@ -1,12 +1,9 @@
-extends Node
+extends Node2D
 
 #--- Notes ---
 # Hello, greetings to whoever is reading this. This is merely a prototype and there's a lot of things to implement to. 
 # UNDO is still built-in, not manually coded to see how the game works. So, as arrays.
 # Note written by: Sharksnow-123 (Briar)
-
-
-
 
 # --- SETTINGS ---
 const MAX_GUESSES := 6
@@ -16,13 +13,15 @@ var word_list_day3 = ["ASTRONOMY", "COMPUTER", "VOLCANO"]
 
 # --- STATE ---
 var chosen_word := ""
-var hidden := []
+var hidden_letters := []            # renamed from hidden
 var guessed_letters := []
 var wrong_guesses := 0
-var undo_stack := []          # using built-in Array for undo snapshots
+var undo_stack := []
 var current_day := 1
 const MAX_DAYS := 3
 var last_round_result : String = ""   # "win" or "lose"
+
+
 
 # --- UI ---
 @onready var word_label = $WordLabel
@@ -34,26 +33,114 @@ var last_round_result : String = ""   # "win" or "lose"
 @onready var continue_button = $LosePanel/ContinueButton
 @onready var return_button = $LosePanel/ReturnMain
 @onready var day_frame = $DayFrame
+@onready var dialogue_panel = $DialoguePanel
+@onready var dialogue_label = $DialoguePanel/DialogueText
+
+#RECENTLY ADDED
+var dialogue_list = [ "Butcher: Hey!!! are u tired now?",
+	"Butcher: Wakie wakie little roachie", "Butcher: Ehhhh, come on lets play more!!"]
+var dialogue_index = 0;
+
+const DIALOGUE_INTERVAL := 5.0
+const DIALOGUE_SHOWTIME := 3.0
+
+
+const TYPE_SPEED := 0.05
+var _typing := 	false
+var _type_char_index := 0
+var _current_text := ""
+var _type_timer := Timer.new()
+
 
 func _ready():
 	randomize()
 	connect_buttons()
 	start_game()
+	dialogue_label.visible = false
+	
+	
+	_type_timer.wait_time = TYPE_SPEED
+	_type_timer.one_shot = false
+	_type_timer.connect("timeout", Callable(self, "_typewriter_step"))
+	add_child(_type_timer)
+	
+	_start_dialogue_loop()
+
+ #------------------------
+ #Dialogue Test
+ #------------------------
+
+func _start_dialogue_loop():
+	var dialogue_timer = Timer.new()
+	dialogue_timer.wait_time = DIALOGUE_INTERVAL
+	dialogue_timer.one_shot = false
+	dialogue_timer.autostart = true
+	dialogue_timer.connect("timeout", Callable(self, "_on_dialogue_timer_timeout"))
+	add_child(dialogue_timer)
 
 
-# ----------------------------------
+func _on_dialogue_timer_timeout():
+	#dialogue_label.text = dialogue_list[dialogue_index]
+	#dialogue_label.visible = true
+	#
+	#var hide_timer = Timer.new()
+	#hide_timer.wait_time = DIALOGUE_SHOWTIME
+	#hide_timer.one_shot = true
+	#hide_timer.connect("timeout", Callable(self, "_hide_dialogue"))
+	#add_child(hide_timer)
+	#hide_timer.start()
+	
+	show_dialogue(dialogue_list[dialogue_index])
+	dialogue_index = (dialogue_index + 1) % dialogue_list.size()
+	
+
+func show_dialogue(text: String):
+	dialogue_label.visible = true
+	_current_text = text
+	dialogue_label.text = ""
+	_type_char_index = 0
+	_typing = true
+	_type_timer.start()
+	
+	var hide_timer = Timer.new()
+	hide_timer.wait_time = TYPE_SPEED * text.length() + DIALOGUE_SHOWTIME
+	hide_timer.one_shot = true
+	hide_timer.connect("timeout", Callable(self, "_hide_dialogue"))
+	add_child(hide_timer)
+	hide_timer.start()
+	
+
+func _typewriter_step():
+	if _type_char_index < _current_text.length():
+		dialogue_label.text += _current_text[_type_char_index]
+		_type_char_index += 1
+	
+	else:
+		_typing = false
+		_type_timer.stop()
+	
+	
+
+
+func _hide_dialogue():
+	dialogue_label.visible = false
+
+
+
+
+
+# ------------------------
 # START GAME
-# ----------------------------------
+# ------------------------
 func start_game():
 	wrong_guesses = 0
 	guessed_letters.clear()
 	undo_stack.clear()
 
-	# choose a word based on current day
 	chosen_word = _get_word_for_day()
-	hidden.clear()
+	hidden_letters.clear()
 	for c in chosen_word:
-		hidden.append("_")
+		hidden_letters.append("_")
 
 	update_ui()
 	_update_day_display()
@@ -62,53 +149,45 @@ func start_game():
 	print("[Game] Day %d - New word length: %d" % [current_day, chosen_word.length()])
 	print("[Game] Guesses allowed:", MAX_GUESSES)
 
-
 func _get_word_for_day() -> String:
-	# pick a random word according to current day
-	if current_day == 1:
-		return word_list_day1[randi() % word_list_day1.size()]
-	elif current_day == 2:
-		return word_list_day2[randi() % word_list_day2.size()]
-	else:
-		return word_list_day3[randi() % word_list_day3.size()]
+	match current_day:
+		1: return word_list_day1[randi() % word_list_day1.size()]
+		2: return word_list_day2[randi() % word_list_day2.size()]
+		_: return word_list_day3[randi() % word_list_day3.size()]
 
-
-# ----------------------------------
-# CONNECT KEY BUTTONS
-# ----------------------------------
+# ------------------------
+# CONNECT BUTTONS
+# ------------------------
 func connect_buttons():
-	# connect letter buttons safely (capture local reference)
+	if letters == null:
+		push_error("Letters node not found!")
+		return
+
 	for btn in letters.get_children():
 		if btn is Button:
 			var b = btn
 			b.pressed.connect(func(): handle_letter(b.text))
 
-	# other buttons
 	undo_button.pressed.connect(undo)
 	continue_button.pressed.connect(_on_continue_pressed)
-	return_button.pressed.connect(_on_return_main_pressed)
+	return_button.pressed.connect(returnMain_pressed)
 
-
-# ----------------------------------
+# ------------------------
 # UPDATE DISPLAY
-# ----------------------------------
+# ------------------------
 func update_ui():
-	word_label.text = " ".join(hidden)
+	word_label.text = " ".join(hidden_letters)
 	guessed_label.text = "Guessed: " + ", ".join(guessed_letters)
 
-
 func _update_day_display():
-	# day_frame can be Label or a container with a child label; handle both
 	if day_frame is Label:
 		day_frame.text = "Day: " + str(current_day) + " / " + str(MAX_DAYS)
 
-
-# ----------------------------------
-# GUESS LETTER
-# ----------------------------------
+# ------------------------
+# HANDLE LETTER
+# ------------------------
 func handle_letter(letter):
 	letter = letter.to_upper()
-
 	if letter in guessed_letters:
 		return
 
@@ -118,59 +197,44 @@ func handle_letter(letter):
 	update_ui()
 
 	var correct := false
-
 	for i in range(chosen_word.length()):
 		if chosen_word[i] == letter:
-			hidden[i] = letter
+			hidden_letters[i] = letter
 			correct = true
 
 	update_ui()
 
-	if correct:
-		if "_" not in hidden:
-			show_end("YOU WIN!")
-	else:
+	if correct and "_" not in hidden_letters:
+		show_end("YOU WIN!")
+	elif not correct:
 		wrong_guesses += 1
 		print("[GUESS] Wrong guesses:", wrong_guesses, " / ", MAX_GUESSES)
-
 		if wrong_guesses >= MAX_GUESSES:
 			show_end("YOU LOSE!")
 
-
-# ----------------------------------
+# ------------------------
 # UNDO
-# ----------------------------------
+# ------------------------
 func save_state():
-	# store snapshots so undo can fully restore
-	var snapshot = {
-		"hidden": hidden.duplicate(),
+	undo_stack.append({
+		"hidden_letters": hidden_letters.duplicate(),
 		"guessed": guessed_letters.duplicate(),
 		"wrong": wrong_guesses
-	}
-	undo_stack.append(snapshot)
-	print("[SAVE] saved state; undo stack size =", undo_stack.size())
-
+	})
 
 func undo():
 	if undo_stack.is_empty():
 		print("[UNDO] No more undo")
 		return
-
 	var state = undo_stack.pop_back()
-	hidden = state.hidden
+	hidden_letters = state.hidden_letters
 	guessed_letters = state.guessed
 	wrong_guesses = state.wrong
-
 	update_ui()
-	print("[UNDO] restored state; undo stack size =", undo_stack.size())
 
-	update_ui()
-	print("[UNDO] restored state; undo stack size =", undo_stack.size())
-
-
-# ----------------------------------
-# SHOW LOSE/WIN
-# ----------------------------------
+# ------------------------
+# SHOW END
+# ------------------------
 func show_end(text):
 	if text == "YOU LOSE!":
 		title_label.text = text + "\nThe word was: " + chosen_word
@@ -180,46 +244,36 @@ func show_end(text):
 		last_round_result = "win"
 
 	lose_panel.visible = true
-	print("[GAME END] " + title_label.text, " | result =", last_round_result)
 
-
-
-# ----------------------------------
+# ------------------------
 # CONTINUE / NEXT DAY
-# ----------------------------------
+# ------------------------
 func _on_continue_pressed():
 	if last_round_result == "win":
-		# Player won the round
 		if current_day < MAX_DAYS:
-			# Go to next day
 			current_day += 1
-			print("[DAY] Player won. Going to day:", current_day)
 			start_game()
-
 		else:
-			# Player completed the final day → WIN THE ENTIRE GAME
-			print("[GAME] Completed all days! Changing scene...")
 			await get_tree().create_timer(0.8).timeout
 			get_tree().change_scene_to_file("res://EndScene1.tscn")
-
 	elif last_round_result == "lose":
-		# Reset to day 1
-		print("[DAY] Player lost. Resetting to Day 1")
 		current_day = 1
 		get_tree().change_scene_to_file("res://DeathScene.tscn")
-
-	else:
-		print("[ERROR] Continue pressed but no round result stored!")
-
-	# Clear result so it doesn't apply twice
 	last_round_result = ""
 
 
-
-
-# ----------------------------------
-# RETURN TO MAIN 
-# ----------------------------------
-func _on_return_main_pressed():
-	await get_tree().create_timer(0.5).timeout #added delay for aesthetics ahh
+# ------------------------
+# RETURN TO MAIN
+# ------------------------
+func returnMain_pressed():
 	get_tree().change_scene_to_file("res://main.tscn")
+
+
+#-----------------------------------
+# OPTIONS PANEL
+#----------------------------------
+func option_pressed():
+	var option_scene = load("res://Option_Panel.tscn").instantiate()
+	option_scene.previous_scene = get_tree().current_scene
+	get_tree().root.add_child(option_scene)
+	hide()

@@ -6,6 +6,7 @@
 [sub_resource type="Theme" id="Theme_6brm5"]
 
 [node name="Node2D" type="Node2D"]
+position = Vector2(388, 185)
 script = ExtResource("1_6brm5")
 
 [node name="4e7Fc28532744Dde99DeAca50Bba7Bc3" type="Sprite2D" parent="."]

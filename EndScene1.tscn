@@ -1,15 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://clwxwihgsyxdu"]
+[gd_scene load_steps=5 format=3 uid="uid://clwxwihgsyxdu"]
 
 [ext_resource type="Script" uid="uid://cb7eurk6tf3i8" path="res://end_scene_1.gd" id="1_vhu5x"]
 [ext_resource type="Texture2D" uid="uid://d1rsy30pxtsu0" path="res://Photos/FreedomScene.jpeg" id="2_356jh"]
+[ext_resource type="Texture2D" uid="uid://bwhnc68oia7fr" path="res://Photos/Game-Background_1.jpeg" id="2_vhu5x"]
 
 [sub_resource type="Theme" id="Theme_mt4b3"]
 
 [node name="VictoryScene1" type="Node2D"]
+position = Vector2(368, 236)
 script = ExtResource("1_vhu5x")
 
+[node name="GameBackground1" type="Sprite2D" parent="."]
+position = Vector2(599, 281)
+scale = Vector2(1.8886719, 1.3776041)
+texture = ExtResource("2_vhu5x")
+
 [node name="FreedomScene" type="Sprite2D" parent="."]
-position = Vector2(579.25, 244.375)
+position = Vector2(583, 246)
 scale = Vector2(0.75988144, 0.8449912)
 texture = ExtResource("2_356jh")
 
