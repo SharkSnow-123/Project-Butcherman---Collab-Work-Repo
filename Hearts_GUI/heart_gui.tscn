@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dc6fnf7sp5afr"]
+
+[ext_resource type="Texture2D" uid="uid://o2h66vlc583p" path="res://Photos/arm.png" id="1_fudf0"]
+
+[node name="HeartGUI" type="Panel"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(37, 38)
+offset_right = 37.0
+offset_bottom = 38.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(18, 18)
+scale = Vector2(0.68, 0.55)
+texture = ExtResource("1_fudf0")

@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmmvhndjlgv2q"]
+
+[ext_resource type="PackedScene" uid="uid://dc6fnf7sp5afr" path="res://Hearts_GUI/heart_gui.tscn" id="1_nfgty"]
+
+[node name="HeartsContainer" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HeartGUI" parent="." instance=ExtResource("1_nfgty")]
+layout_mode = 2
+
+[node name="HeartGUI2" parent="." instance=ExtResource("1_nfgty")]
+layout_mode = 2
+
+[node name="HeartGUI3" parent="." instance=ExtResource("1_nfgty")]
+layout_mode = 2
+
+[node name="HeartGUI4" parent="." instance=ExtResource("1_nfgty")]
+layout_mode = 2
+
+[node name="HeartGUI5" parent="." instance=ExtResource("1_nfgty")]
+layout_mode = 2
