@@ -29,6 +29,7 @@ var undoCtr = 0;
 @onready var guessed_label = $GuessedLetters
 @onready var letters = $Letters
 @onready var undo_button = $UndoButton
+
 @onready var lose_panel = $LosePanel
 @onready var title_label = $LosePanel/Title
 @onready var continue_button = $LosePanel/ContinueButton
@@ -50,7 +51,7 @@ func start_game():
 	undoCtr = 0
 	guessed_letters.clear()
 	undo_stack.clear()
-
+	
 	# choose a word based on current day
 	chosen_word = _get_word_for_day()
 	hidden.clear()
@@ -88,6 +89,7 @@ func connect_buttons():
 
 	# other buttons
 	undo_button.pressed.connect(undo)
+	
 	continue_button.pressed.connect(_on_continue_pressed)
 	return_button.pressed.connect(_on_return_main_pressed)
 
